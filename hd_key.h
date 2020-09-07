@@ -22,6 +22,17 @@
 
 
 void HDKEY_LED_Init(void);
+void TouchKey_1_LEDOn(void);
+void TouchKey_1_LEDOff(void);
+void TouchKey_2_LEDOn(void);
+void TouchKey_2_LEDOff(void);
+
+void TouchKey_3_LEDOn(void);
+void TouchKey_3_LEDOff(void);
+
+void PowerKey_LEDOn(void);
+void PowerKey_LEDOff(void);
+
 
 
 
