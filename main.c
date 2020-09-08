@@ -148,18 +148,7 @@ void Kscan()
 				KeyREFFlag &= ~0x04;
 			}
 		
-			if(KeyOldFlag & 0x08)
-			{
-				if(0 == (KeyREFFlag & 0x08))
-				{
-					KeyREFFlag |= 0x08;
-					DispData ^= 0x08;
-				}
-			}
-			else
-			{
-				KeyREFFlag &= ~0x08;
-			}
+			
 		}
 	}
 	else

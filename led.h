@@ -1,31 +1,37 @@
 #ifndef __LED_H__
 #define __LED_H__
 #include <cms.h>
-
-//led output port config 
-#define     LED1	RA3
-#define     LED2 	RA4
-#define		LED3    RB0
-#define		LED4	RB2
-#define     LED5    RB1
-#define     LED6    RB5
-#define     LED7    RC1
-#define     LED8    RC2
-#define     LED9    RC3
-#define     LED_POWER_RED    RD2   //Ä¾Ã§Ã”Â´Â°Â´ÅºÃ¼Ã–Â¸Ä˜Å¾Ä¾Ä†
+#include "mytype.h"
 
 
-void TouchKey_1_LEDOn(void);
-void TouchKey_1_LEDOff(void);
-void TouchKey_2_LEDOn(void);
-void TouchKey_2_LEDOff(void);
+/*******************************************************
+					IO¶¨Òå				  
+********************************************************/
+#define		Led1		RA3
+#define		Led2		RA4  //D12
+#define		Led3		RB0  //
+#define		Led4		RB2   //com control 4 led swtich
+#define     Led5        RB1
+#define     Led6        RB5
+#define     Led7        RC1
+#define     Led8        RC2
+#define     Led9        RC3
 
-void TouchKey_3_LEDOn(void);
-void TouchKey_3_LEDOff(void);
-
-void PowerKey_LEDOn(void);
-void PowerKey_LEDOff(void);
 
 
+
+#define    LED_RED     RD2
+
+
+#define  POWER_KEY    RC0     //input IO ¿ª»ú¼ü
+#define  POWER_PRES   1
+
+
+//extern uint8_t  ChildLock ;
+
+void TurnOff_LED(void);
+void Net_LED_On(void);
+unsigned char HDKey_Scan(unsigned char mode);
 
 #endif 
+

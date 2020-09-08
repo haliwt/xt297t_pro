@@ -15,7 +15,10 @@
 #define uchar	unsigned char
 #define uint	unsigned int
 #define ulong	unsigned long
-/*******************************************************/
-/*******************************************************/
-/*******************************************************/
+
+
+typedef uchar uint8_t;
+typedef uint  int8_t;
+typedef  ulong  uint16_t;
+
 #endif

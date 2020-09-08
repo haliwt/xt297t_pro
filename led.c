@@ -1,106 +1,60 @@
 #include "led.h"
 
-/*****************************************************************
+/****************************************************
 	*
-	*Function Name :void TouchKey_1_LED(void)
-	*Function:read flash data
-	*Input Ref:NO
-	*Return Ref:NO
+	*Function Name: void TunrnOff_ALL_LED(void)
+	*Function :
 	*
-******************************************************************/
-void TouchKey_1_LEDOn(void)
+	*
+*****************************************************/
+void TunrnOff_ALL_LED(void)
 {
-    LED1 =1;
-	LED2 =1;
-	LED4 = 0;
-
-}
-/*****************************************************************
-	*
-	*Function Name :void TouchKey_1_LEDOff(void)
-	*Function:read flash data
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************/
-void TouchKey_1_LEDOff(void)
-{
-    LED1 =0;
-	LED2 =0;
-	LED4 = 1;
-
-}
-/*****************************************************************
-	*
-	*Function Name :void TouchKey_2_LEDOn(void)
-	*Function:read flash data
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************/
-void TouchKey_2_LEDOn(void)
-{
-   LED3 =1;
-   LED5=1;
-   LED8 = 0;
+   Led1 = 0;
+   Led2 = 0;
+   Led3 = 0;
+   Led4 = 1; //control 4 led on and off 
+   Led5 = 0;
+   Led6 = 0;
+   Led7 = 0;
+   Led8 = 0;
+   Led9 = 0;
 
 
 }
 
-void TouchKey_2_LEDOff(void)
+/****************************************************
+	*
+	*Function Name: void NET_LED_On(void)
+	*Function :
+	*
+	*
+*****************************************************/
+void NET_LED_On(void)
 {
-   LED3 =0;
-   LED5=0;
-   LED8 = 1;
-
+    Led4 =0 ;
 
 }
-/*****************************************************************
+/****************************************************
 	*
-	*Function Name :void TouchKey_3_LEDOn(void)
-	*Function:read flash data
-	*Input Ref:NO
-	*Return Ref:NO
+	*Function Name: uint8_t HDKey_Scan(uint8_t mode)
+	*Function :
+	*Inpute Ref: 0 ---不支持连续按键
+	*Return Ref: 0 --没有按键按下， 1---有按键按下
 	*
-******************************************************************/
-void TouchKey_3_LEDOn(void)
+*****************************************************/
+uint8_t HDKey_Scan(uint8_t mode)
 {
-   LED6=1;
-   LED7=1;
-   LED9 = 0;
-
-
-
+	
+		static uint8_t key_up=1;	 //°´¼üËÉ¿ª±êÖ¾
+		if(mode==1)key_up=1;	// 支持连续按键
+		if(key_up&&(POWER_KEY== 1))
+		{
+		   
+			key_up =0 ;
+			Delay_ms(20);
+			if(POWER_KEY== 1 ) 	return POWER_PRES;
+		
+		}else if(POWER_KEY==0)key_up=1;
+		return 0;	//没有按键按下
 }
-void TouchKey_3_LEDOff(void)
-{
-   LED6=0;
-   LED7=0;
-   LED9 = 1;
-}
-/*****************************************************************
-	*
-	*Function Name :void PowerKey_LEDOn(void)
-	*Function:read flash data
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************/
-void PowerKey_LEDOn(void)
-{
-    LED_POWER_RED =1;
 
-}
-/*****************************************************************
-	*
-	*Function Name :void PowerKey_LEDOff(void)
-	*Function:read flash data
-	*Input Ref:NO
-	*Return Ref:NO
-	*
-******************************************************************/
-void PowerKey_LEDOff(void)
-{
-   LED_POWER_RED = 0;
-
-}
