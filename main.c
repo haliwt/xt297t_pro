@@ -1,10 +1,19 @@
+/***********************************************************************
+方案说明：
+***********************************************************************/
+/**********************************************************************/
+/*修改说明*/
 
+/**********************************************************************/
+/**********************************************************************/
+/**********************************************************************/
+/*头文件*/
 #include <cms.h>
 #include "main.h"
 #include "delay.h"
 #include "mytype.h"
-#include "CheckTouchKey.h"
-#include "hd_key.h"
+#include "Touch_Kscan_Library.h"
+#include "REL_Sender.h"
 /**********************************************************************/
 /*全局变量声明*/
 /**********************************************************************/
@@ -29,7 +38,7 @@ void Init_ic (void)
 	INTCON = 0x00;
 	PIR1 = 0;
 	PIR2 = 0;
-	WDTCON = 0;
+	WDTCON = 0x01;
 	TRISA = 0B00000000;
 	TRISB = 0B00000000;
 	TRISC = 0x00;
@@ -69,12 +78,11 @@ void Init_ram (void)
 void Sys_set (void)
 {
 	asm("clrwdt");
-	WDTCON = 0;
-	//TRISA = 0B00000000;
-	//TRISB = 0B00000000;
-	HDKEY_LED_Init();
-	//TRISC = 0x00;
-	//TRISD = 0x00;
+	WDTCON = 0x01;
+	TRISA = 0B00000000;
+	TRISB = 0B00000000;
+	TRISC = 0x00;
+	TRISD = 0x00;
 	OPTION_REG = 0;
 	PIE1 = 0B00000010;
 	PR2 = 125;
@@ -86,38 +94,80 @@ void Sys_set (void)
 }
 
 /***********************************************************************
-     *
-     *Function Name:void Kscan(void)
-     *
-     *
-     *
-     
+//键处理函数
 ***********************************************************************/
 void Kscan()
 {
-	static unsigned int KeyOldFlag = 0;
+	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
+
 	if(i)
 	{
 		if(i != KeyOldFlag)
 		{
 			KeyOldFlag = i;			//有检测到按键
+
 			buzf = 1;
 			buzsec = 600;
-
-			if(0x1&i){DispData ^= 0x01;}
-			else if(0x2&i){DispData ^= 0x02;}
-			else if(0x4&i){DispData ^= 0x04;}
-			else if(0x8&i){DispData ^= 0x08;}
+			if(KeyOldFlag & 0x01)
+			{
+				if(0 == (KeyREFFlag & 0x01))
+				{
+					KeyREFFlag |= 0x01;
+					DispData ^= 0x01;
+				}
+			}
+			else
+			{
+				KeyREFFlag &= ~0x01;
+			}
+			
+			if(KeyOldFlag & 0x02)
+			{
+				if(0 == (KeyREFFlag & 0x02))
+				{
+					KeyREFFlag |= 0x02;
+					DispData ^= 0x02;
+				}
+			}
+			else
+			{
+				KeyREFFlag &= ~0x02;
+			}
+			
+			if(KeyOldFlag & 0x04)
+			{
+				if(0 == (KeyREFFlag & 0x04))
+				{
+					KeyREFFlag |= 0x04;
+					DispData ^= 0x04;
+				}
+			}
+			else
+			{
+				KeyREFFlag &= ~0x04;
+			}
+		
+			if(KeyOldFlag & 0x08)
+			{
+				if(0 == (KeyREFFlag & 0x08))
+				{
+					KeyREFFlag |= 0x08;
+					DispData ^= 0x08;
+				}
+			}
+			else
+			{
+				KeyREFFlag &= ~0x08;
+			}
 		}
 	}
 	else
 	{
 		KeyOldFlag = 0;
+		KeyREFFlag = 0;
 	}
 }
-
-
 
 /***********************************************
 函数名称：Display
@@ -126,7 +176,6 @@ void Kscan()
 出口参数：无
 备注：
 ************************************************/
-#if 0
 void Display()//循环扫描各个COM口
 {
 	Com = 1;
@@ -148,16 +197,10 @@ void Display()//循环扫描各个COM口
 	
 	SEGEN0 = 0X80;
 	SEGEN1 = 0X07;
-	SEGEN2 = 0X50;
+	SEGEN2 = 0X20;
 }
-#endif 
 /***********************************************************************
-	*
-	*Functin Name: void interrupt time0(void)
-	*Function :interrupt function
-	*
-	*
-	*
+函数功能：中断入口函数
 ***********************************************************************/
 void interrupt time0(void)
 {
@@ -165,7 +208,6 @@ void interrupt time0(void)
 	{
 		TMR2IF = 0;
 		tcount ++;
-		
 		__CMS_GetTouchKeyValue();
 	}
 	else
@@ -189,21 +231,16 @@ void main(void)
 	while(1)
 	{
 		OSCCON = 0x71;
-		if(HDKey == 1){
-         TouchKey_1_LEDOn();
-		 TouchKey_2_LEDOn();
-		 TouchKey_3_LEDOn();
-		 LED_POWER_RED =1;
-
-
-		}
 		if(tcount >= 32)
 		{
 			tcount = 0;												//主程序循环4ms
-		//	Display();
+			Sys_set();
+			Display();
+			#if (REL_SENDER_ENABLE == 1)//调试宏定义是否为1
+				REL_SenderLoop();//发码子程序
+			#endif
 			__CMS_CheckTouchKey();	//扫描按键
 			Kscan();			//按键处理
-			Sys_set();
 		}
 	}
 }

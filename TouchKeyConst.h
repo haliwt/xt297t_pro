@@ -20,13 +20,16 @@
 #define		C_KCHS13		0x0D
 #define		C_KCHS14		0x0E
 #define		C_KCHS15		0x0F
-
-#define		DAT_STEP0 		0x00
-#define		DAT_STEP1 		0x08
-#define		DAT_STEP2 		0x04
-#define		DAT_STEP3 		0x0C
-#define		DAT_STEP4 		0x06
-#define		DAT_STEP5 		0x0E
+#define		C_KCHS16		0x10
+#define		C_KCHS17		0x11
+#define		C_KCHS18		0x12
+#define		C_KCHS19		0x13
+#define		C_KCHS20		0x14
+#define		C_KCHS21		0x15
+#define		C_KCHS22		0x16
+#define		C_KCHS23		0x17
+#define		C_KCHS24		0x18
+#define		C_KCHS25		0x19
 
 #define		TK_TIME0		0x00
 #define		TK_TIME1		0x08
