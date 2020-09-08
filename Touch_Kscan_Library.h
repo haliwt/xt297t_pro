@@ -24,7 +24,9 @@ extern volatile unsigned char KeyFlag[3];
 
 //检测通道设定,为C_KCHS0至C_KCHS25其中之一
 const unsigned char Table_KeyChannel[] = {
-	C_KCHS2,			//Key1
+	C_KCHS1,			//Key1
+	C_KCHS2,
+	C_KCHS0,            
 
 };
 
@@ -32,6 +34,8 @@ const unsigned char Table_KeyChannel[] = {
 //灵敏度阈值设定必须大于噪声阈值VOL_VALUE
 const unsigned int Table_KeyDown[] = {
 	50,			//Key1
+	50,
+	40,
 
 };
 
@@ -42,7 +46,7 @@ const unsigned int Table_KeyDown[] = {
 常规触摸效果参数设置
 */
 //待检测按键总数,常量
-#define		C_KEY_TOTAL		1	//最多支持16通道
+#define		C_KEY_TOTAL		3//1	//最多支持16通道
 
 //按键按下消抖次数C_KEY_SHAKE
 #define		C_KEY_SHAKE		2	//2~8

@@ -178,22 +178,23 @@ void Kscan()
 ************************************************/
 void Display()//循环扫描各个COM口
 {
-	Com = 1;
+	//Com = 1;
 	Led1 = 0;
 	Led2 = 0;
 	Led3 = 0;
 	Led4 = 0;
 	
-	if(DispData & 0x01)
-		Led1 = 1;
-	if(DispData & 0x02)
+	if(DispData & 0x01) //TouchKey 2 RA1
+		Led4 = 1;	//Led1 = 1;
+	if(DispData & 0x02) //TouchKey 1  RA2
 		Led2 = 1;
-	if(DispData & 0x04)
+	if(DispData & 0x04)//TouchKey 0 RA0  
 		Led3 = 1;
-	if(DispData & 0x08)
-		Led4 = 1;
+	
+	
+	
 		
-	Com = 0;
+//	Com = 0;
 	
 	SEGEN0 = 0X80;
 	SEGEN1 = 0X07;
