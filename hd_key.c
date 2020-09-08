@@ -112,7 +112,7 @@ void TouchKey_3_LEDOff(void)
 ******************************************************************/
 void PowerKey_LEDOn(void)
 {
-    LED_RED =1;
+    LED_POWER_RED =1;
 
 }
 /*****************************************************************
@@ -125,6 +125,6 @@ void PowerKey_LEDOn(void)
 ******************************************************************/
 void PowerKey_LEDOff(void)
 {
-   LED_RED = 0;
+   LED_POWER_RED = 0;
 
 }

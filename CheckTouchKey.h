@@ -107,7 +107,7 @@ const unsigned int Table_Dat_Step[] =
 //1：开启
 //降低噪声值的同时会降低响应速度
 //此功能关闭时，噪声阈值VOL_VALUE需增大一倍
-#define		LVBO_EN			1
+#define		LVBO_EN			2//1
 
 //计数器位数
 #define 	TK_TIME			TK_TIME3//0~7 (TK_TIME+8)位

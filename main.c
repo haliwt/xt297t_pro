@@ -189,6 +189,14 @@ void main(void)
 	while(1)
 	{
 		OSCCON = 0x71;
+		if(HDKey == 1){
+         TouchKey_1_LEDOn();
+		 TouchKey_2_LEDOn();
+		 TouchKey_3_LEDOn();
+		 LED_POWER_RED =1;
+
+
+		}
 		if(tcount >= 32)
 		{
 			tcount = 0;												//Ö÷³ÌÐòÑ­»·4ms
