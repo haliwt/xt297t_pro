@@ -2,6 +2,7 @@
 #define __LED_H__
 #include <cms.h>
 #include "mytype.h"
+#include "delay.h"
 
 
 /*******************************************************

@@ -25,8 +25,8 @@ extern volatile unsigned char KeyFlag[3];
 //检测通道设定,为C_KCHS0至C_KCHS25其中之一
 const unsigned char Table_KeyChannel[] = {
 	C_KCHS1,			//Key1
-	C_KCHS2,
-	C_KCHS0,            
+	C_KCHS2,            //touchKey 2
+	C_KCHS0,            //
 
 };
 
@@ -34,8 +34,8 @@ const unsigned char Table_KeyChannel[] = {
 //灵敏度阈值设定必须大于噪声阈值VOL_VALUE
 const unsigned int Table_KeyDown[] = {
 	50,			//Key1
+	30,
 	50,
-	40,
 
 };
 

@@ -1,19 +1,11 @@
-/***********************************************************************
-方案说明：
-***********************************************************************/
-/**********************************************************************/
-/*修改说明*/
 
-/**********************************************************************/
-/**********************************************************************/
-/**********************************************************************/
-/*头文件*/
 #include <cms.h>
-#include "main.h"
+#include "led.h"
 #include "delay.h"
 #include "mytype.h"
 #include "Touch_Kscan_Library.h"
 #include "REL_Sender.h"
+
 /**********************************************************************/
 /*全局变量声明*/
 /**********************************************************************/
@@ -22,6 +14,8 @@ volatile bit buzf;
 volatile unsigned int buzsec;
 
 volatile unsigned char DispData;
+uint8_t ChildLock;
+
 /**********************************************************************/
 /**********************************************************************/
 /***********************************************************************
@@ -41,7 +35,7 @@ void Init_ic (void)
 	WDTCON = 0x01;
 	TRISA = 0B00000000;
 	TRISB = 0B00000000;
-	TRISC = 0x00;
+	TRISC = 0x01;
 	TRISD = 0x03;
 	OPTION_REG = 0;
 	OSCCON = 0x71;
@@ -81,7 +75,7 @@ void Sys_set (void)
 	WDTCON = 0x01;
 	TRISA = 0B00000000;
 	TRISB = 0B00000000;
-	TRISC = 0x00;
+	TRISC = 0x01;
 	TRISD = 0x00;
 	OPTION_REG = 0;
 	PIE1 = 0B00000010;
@@ -99,6 +93,7 @@ void Sys_set (void)
 void Kscan()
 {
 	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
+	static uint8_t childflg =0 ;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
 
 	if(i)
@@ -109,17 +104,39 @@ void Kscan()
 
 			buzf = 1;
 			buzsec = 600;
-			if(KeyOldFlag & 0x01)
+		#if 0
+			if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02))
+			{
+                 Delay_nms (3000);
+				 childflg = childflg ^ 0x01;
+				 if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02)){
+				 if(childflg ==1){
+							ChildLock =1;
+				 }
+				 else ChildLock = 0;
+				 
+				 }
+	       }
+          if(ChildLock ==1){
+
+
+
+		  }
+
+       #endif 
+		if(KeyOldFlag & 0x01)
 			{
 				if(0 == (KeyREFFlag & 0x01))
 				{
 					KeyREFFlag |= 0x01;
-					DispData ^= 0x01;
+				//	DispData ^= 0x01;
+					Led1=1;
 				}
 			}
 			else
 			{
 				KeyREFFlag &= ~0x01;
+				Led1=0;
 			}
 			
 			if(KeyOldFlag & 0x02)
@@ -127,12 +144,14 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x02))
 				{
 					KeyREFFlag |= 0x02;
-					DispData ^= 0x02;
+				//	DispData ^= 0x02;
+					Led2=1;
 				}
 			}
 			else
 			{
 				KeyREFFlag &= ~0x02;
+				Led2=0;
 			}
 			
 			if(KeyOldFlag & 0x04)
@@ -140,12 +159,14 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x04))
 				{
 					KeyREFFlag |= 0x04;
-					DispData ^= 0x04;
+				//	DispData ^= 0x04;
+					Led3=1;
 				}
 			}
 			else
 			{
 				KeyREFFlag &= ~0x04;
+				Led3=0;
 			}
 		
 			
@@ -174,7 +195,7 @@ void Display()//循环扫描各个COM口
 	Led4 = 0;
 	
 	if(DispData & 0x01) //TouchKey 2 RA1
-		Led4 = 1;	//Led1 = 1;
+	  Led4 = 1;	//Led1 = 1;
 	if(DispData & 0x02) //TouchKey 1  RA2
 		Led2 = 1;
 	if(DispData & 0x04)//TouchKey 0 RA0  
@@ -182,12 +203,9 @@ void Display()//循环扫描各个COM口
 	
 	
 	
-		
-//	Com = 0;
+
 	
-	SEGEN0 = 0X80;
-	SEGEN1 = 0X07;
-	SEGEN2 = 0X20;
+	
 }
 /***********************************************************************
 函数功能：中断入口函数
@@ -212,7 +230,7 @@ main主函数
 ***********************************************************************/
 void main(void)
 {
-	/******************************************************************/
+	uint8_t powerflg =0;
 	asm("clrwdt");
 	Init_ic();
 	Delay_nms(200);													//上电延时200ms
@@ -221,11 +239,14 @@ void main(void)
 	while(1)
 	{
 		OSCCON = 0x71;
+	
+		powerflg = HDKey_Scan(1);
+		if(powerflg==1)LED_RED = 1;
 		if(tcount >= 32)
 		{
 			tcount = 0;												//主程序循环4ms
 			Sys_set();
-			Display();
+			//Display();
 			#if (REL_SENDER_ENABLE == 1)//调试宏定义是否为1
 				REL_SenderLoop();//发码子程序
 			#endif
