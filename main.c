@@ -97,7 +97,7 @@ void Sys_set (void)
 void Kscan()
 {
 	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
-	static uint8_t childflg =0 ;
+	static uint8_t childflg =0 ,timerflg =0,windflg =0;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
 
 	if(i)
@@ -112,42 +112,85 @@ void Kscan()
 			if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02))
 			{
                  Delay_nms (3000);
+				 Delay_nms (3000);
 				 childflg = childflg ^ 0x01;
 				 if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02)){
-				 if(childflg ==1){
-							ChildLock =1;
-				 }
-				 else ChildLock = 0;
+					 if(childflg ==1){
+								
+								ref.childLock = 1;
+								Led4=1;
+					 }
+					 else{
+					 	ref.childLock = 0;
+
+					 }
 				 
 				 }
 	       }
-          if(ChildLock ==1){
-				Led4=1;
-			}
+         
 
        #endif 
 		if(KeyOldFlag & 0x01)
-			{
-				if(0 == (KeyREFFlag & 0x01))
+		{
+				if(0 == (KeyREFFlag & 0x01)) //定时按键
 				{
 					KeyREFFlag |= 0x01;
-				
-					Led1=1;
+					timerflg = timerflg ^ 0x01;
+					if(timerflg ==1){
+							Led8=1;
+							ref.timerTim = 1;
+					}
+					else{
+						     Led8=0;
+							ref.timerTim = 0;
+
+					}
 				}
-			}
-			else
-			{
-				KeyREFFlag &= ~0x01;
-				Led1=0;
-			}
+		}
+		else
+		{
+			KeyREFFlag &= ~0x01;
 			
-			if(KeyOldFlag & 0x02)
+		}
+			
+			if(KeyOldFlag & 0x02)  //风速调节按键
 			{
 				if(0 == (KeyREFFlag & 0x02))
 				{
 					KeyREFFlag |= 0x02;
-				
-					Led2=1;
+					windflg ++;
+					if(windflg==1){
+						Led6=1;
+						Led1=0;
+					    Led9=0;
+						Led7 =0;
+						ref.windlevel =1;
+						
+					}
+					else if(windflg ==2){ //2档
+						Led1=1;
+						Led6=0;
+					    Led9=0;
+						Led7 =0;
+						ref.windlevel =2;
+					}
+					else if(windflg ==3){ //3档
+						  Led9 =1;
+						  Led1=0;
+					      Led6=0;
+						  Led7 =0;
+						  ref.windlevel =3;
+					}
+					else if(windflg ==4){ //Auto 
+						  ref.windlevel =4;
+						  windflg=0;
+						  Led7 =1;
+						  Led9 =0;
+						  Led1=0;
+					      Led6=0;
+						
+					}
+
 				}
 			}
 			else
@@ -156,13 +199,16 @@ void Kscan()
 				Led2=0;
 			}
 			
-			if(KeyOldFlag & 0x04)
+			if(KeyOldFlag & 0x04) //滤网置换按键
 			{
-				if(0 == (KeyREFFlag & 0x04))
+
+                 Delay_nms (3000);
+				 Delay_nms (3000);
+				if(KeyOldFlag & 0x04)
 				{
 					KeyREFFlag |= 0x04;
-				
-					Led3=1;
+					ref.filterNet =1;
+				    Led3=1;
 				}
 			}
 			else
@@ -179,6 +225,7 @@ void Kscan()
 		KeyOldFlag = 0;
 		KeyREFFlag = 0;
 	}
+	ref.senddata=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 | ref.sleep <<6 |ref.childLock << 7 ) & 0xff;
 }
 
 
