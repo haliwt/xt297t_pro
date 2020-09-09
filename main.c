@@ -5,6 +5,7 @@
 #include "mytype.h"
 #include "Touch_Kscan_Library.h"
 #include "REL_Sender.h"
+#include "usart1.h"
 
 /**********************************************************************/
 /*全局变量声明*/
@@ -15,6 +16,7 @@ volatile unsigned int buzsec;
 
 volatile unsigned char DispData;
 uint8_t ChildLock;
+
 
 /**********************************************************************/
 /**********************************************************************/
@@ -44,6 +46,8 @@ void Init_ic (void)
 	IOCB = 0;
 	WPUA = 0;
 	WPUB = 0;
+
+
 }
 /***********************************************************************
 函数功能：初始上电RAM赋值
@@ -104,7 +108,7 @@ void Kscan()
 
 			buzf = 1;
 			buzsec = 600;
-		#if 0
+		#if 1
 			if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02))
 			{
                  Delay_nms (3000);
@@ -118,10 +122,8 @@ void Kscan()
 				 }
 	       }
           if(ChildLock ==1){
-
-
-
-		  }
+				Led4=1;
+			}
 
        #endif 
 		if(KeyOldFlag & 0x01)
@@ -129,7 +131,7 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x01))
 				{
 					KeyREFFlag |= 0x01;
-				//	DispData ^= 0x01;
+				
 					Led1=1;
 				}
 			}
@@ -144,7 +146,7 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x02))
 				{
 					KeyREFFlag |= 0x02;
-				//	DispData ^= 0x02;
+				
 					Led2=1;
 				}
 			}
@@ -159,7 +161,7 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x04))
 				{
 					KeyREFFlag |= 0x04;
-				//	DispData ^= 0x04;
+				
 					Led3=1;
 				}
 			}
@@ -179,34 +181,7 @@ void Kscan()
 	}
 }
 
-/***********************************************
-函数名称：Display
-函数功能：显示程序
-入口参数：无
-出口参数：无
-备注：
-************************************************/
-void Display()//循环扫描各个COM口
-{
-	//Com = 1;
-	Led1 = 0;
-	Led2 = 0;
-	Led3 = 0;
-	Led4 = 0;
-	
-	if(DispData & 0x01) //TouchKey 2 RA1
-	  Led4 = 1;	//Led1 = 1;
-	if(DispData & 0x02) //TouchKey 1  RA2
-		Led2 = 1;
-	if(DispData & 0x04)//TouchKey 0 RA0  
-		Led3 = 1;
-	
-	
-	
 
-	
-	
-}
 /***********************************************************************
 函数功能：中断入口函数
 ***********************************************************************/
@@ -225,6 +200,7 @@ void interrupt time0(void)
 	}
 }
 
+
 /***********************************************************************
 main主函数
 ***********************************************************************/
@@ -232,16 +208,22 @@ void main(void)
 {
 	uint8_t powerflg =0;
 	asm("clrwdt");
+	USART1_Init();
 	Init_ic();
 	Delay_nms(200);													//上电延时200ms
-	Init_ram();														//上电给初值
+	Init_ram();	  //上电给初值
+	
+	
 	
 	while(1)
 	{
 		OSCCON = 0x71;
 	
 		powerflg = HDKey_Scan(1);
-		if(powerflg==1)LED_RED = 1;
+		if(powerflg==1){
+			LED_RED = 1;
+			USART1_SendData();
+		}
 		if(tcount >= 32)
 		{
 			tcount = 0;												//主程序循环4ms
