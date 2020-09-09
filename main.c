@@ -157,34 +157,44 @@ void Kscan()
 					KeyREFFlag |= 0x02;
 					windflg ++;
 					if(windflg==1){
-						Led6=1;
-						Led1=0;
-					    Led9=0;
-						Led7 =0;
-						ref.windlevel =1;
 						
-					}
-					else if(windflg ==2){ //2档
+						ref.windlevel =1;  //睡眠风
 						Led1=1;
 						Led6=0;
 					    Led9=0;
 						Led7 =0;
+						Led8= 0;
+						Led4 =1;
+						
+					}
+					else if(windflg ==2){ //2档
+						Led9=1;
+						Led8= 1; //定时器按键灯
+						Led4 =0; //滤网按键灯 打开
+						Led6=0;
+					    Led1=0;
+						Led7 =0;
+						
 						ref.windlevel =2;
 					}
 					else if(windflg ==3){ //3档
-						  Led9 =1;
+						  Led7 =1;
+						  Led8= 1; //定时器按键灯
+						  Led4 =0; //滤网按键灯 打开
 						  Led1=0;
 					      Led6=0;
-						  Led7 =0;
+						  Led9 =0;
 						  ref.windlevel =3;
 					}
 					else if(windflg ==4){ //Auto 
 						  ref.windlevel =4;
 						  windflg=0;
-						  Led7 =1;
+						  Led6 =1;
+						  Led8= 1; //定时器按键灯
+						  Led4 =0; //滤网按键灯 打开
 						  Led9 =0;
 						  Led1=0;
-					      Led6=0;
+					      Led7=0;
 						
 					}
 
@@ -214,7 +224,7 @@ void Kscan()
 		KeyOldFlag = 0;
 		KeyREFFlag = 0;
 	}
-  ref.senddata=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 | ref.sleep <<6 |ref.childLock << 7 ) & 0xff;
+  ref.senddata=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 |ref.childLock << 6 ) & 0xff;
 }
 
 
