@@ -11,6 +11,7 @@ struct senddata{
 	 uint8_t timerTim :1;
 	 uint8_t sleep :1;
 	 uint8_t childLock:1;
+	 uint8_t powerflg:1;
 
 };
 extern struct  senddata ref;
