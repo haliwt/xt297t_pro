@@ -112,7 +112,7 @@ void Kscan()
 			if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02))
 			{
                  Delay_nms (3000);
-				 Delay_nms (3000);
+				 Delay_nms (1000);
 				 childflg = childflg ^ 0x01;
 				 if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02)){
 					 if(childflg ==1){
@@ -122,6 +122,7 @@ void Kscan()
 					 }
 					 else{
 					 	ref.childLock = 0;
+						Led4=0;
 
 					 }
 				 
@@ -147,11 +148,7 @@ void Kscan()
 					}
 				}
 		}
-		else
-		{
-			KeyREFFlag &= ~0x01;
-			
-		}
+		
 			
 			if(KeyOldFlag & 0x02)  //风速调节按键
 			{
@@ -193,11 +190,7 @@ void Kscan()
 
 				}
 			}
-			else
-			{
-				KeyREFFlag &= ~0x02;
-				Led2=0;
-			}
+			
 			
 			if(KeyOldFlag & 0x04) //滤网置换按键
 			{
@@ -211,11 +204,7 @@ void Kscan()
 				    Led3=1;
 				}
 			}
-			else
-			{
-				KeyREFFlag &= ~0x04;
-				Led3=0;
-			}
+		
 		
 			
 		}
@@ -225,7 +214,7 @@ void Kscan()
 		KeyOldFlag = 0;
 		KeyREFFlag = 0;
 	}
-	ref.senddata=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 | ref.sleep <<6 |ref.childLock << 7 ) & 0xff;
+  ref.senddata=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 | ref.sleep <<6 |ref.childLock << 7 ) & 0xff;
 }
 
 
