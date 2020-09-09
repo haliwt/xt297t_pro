@@ -16,6 +16,7 @@ extern struct  senddata ref;
 void USART1_Init(void);
 void USART1_SendData(void);
 void delay_ns(unsigned char t);
+void Set_Usart_Async(void);
 
 uint8_t BCC(void);
 

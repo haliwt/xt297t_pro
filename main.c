@@ -222,6 +222,7 @@ void main(void)
 		powerflg = HDKey_Scan(1);
 		if(powerflg==1){
 			LED_RED = 1;
+			Set_Usart_Async();
 			USART1_SendData();
 		}
 		if(tcount >= 32)

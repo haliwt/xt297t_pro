@@ -5,7 +5,7 @@ struct  senddata ref;
 
 uint8_t senddata[1];
 
-static void Set_Usart_Async(void);
+
 
 /*************************************************************************
  	*
@@ -76,7 +76,7 @@ void USART1_SendData(void)
 		
         TXREG1   = 0x0A; //Recebuffer[0];//Recebuffer[0] ;
 		delay_ns(200);
-		TXREG1   =  senddata[0];  //数据
+		TXREG1   = 0x0B ;//senddata[0];  //数据
 		delay_ns(200);
 		TXREG1   = BCC();
 		delay_ns(200); 	
@@ -120,11 +120,11 @@ SYNC = 0,BRG16 = 1,BRGH = 0;目标波特率 = Fosc/(16*([SPBRGH:SPBRG]+1))
 
 SYNC = 0,BRG16 = 1,BRGH = 1;目标波特率 = Fosc/(4*([SPBRGH:SPBRG]+1))
 */
-static void Set_Usart_Async(void)
+void Set_Usart_Async(void)
 {
-	//SPBRG1 = 102;			//设置波特率为9600 bps，误差0.16%	
+	SPBRG1 = 102;			//设置波特率为9600 bps，误差0.16%	
 	
-	SPBRG1 = 51;	
+	//SPBRG1 = 51;  //WT.EDIT 	
 	
 	
 	
