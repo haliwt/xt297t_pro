@@ -113,46 +113,46 @@ void Kscan()
 		
 		if(KeyOldFlag & 0x01)
 		{
-				if(0 == (KeyREFFlag & 0x01)) //定时按键
-				{
-					keyLed4=0;
-					keyLed3=0;
-					keyLed2=0;
-					keyLed1=1;
-				}
-		}
-		
-			
-			if(KeyOldFlag & 0x02)  //风速调节按键
-			{
-				if(0 == (KeyREFFlag & 0x02))
+				if(0 == (KeyREFFlag & 0x01)) //KEY 2 
 				{
 					keyLed4=0;
 					keyLed3=0;
 					keyLed2=1;
 					keyLed1=0;
+				}
+		}
+		
+			
+			if(KeyOldFlag & 0x02)  //KEY1 ---keyLed2
+			{
+				if(0 == (KeyREFFlag & 0x02))
+				{
+					keyLed4=0;
+					keyLed3=0;
+					keyLed2=0;
+					keyLed1=1;
 
 				}
 			}
 			
-		  if(KeyOldFlag & 0x04) //滤网置换按键
+		  if(KeyOldFlag & 0x04) //KEY4 POWER KEY
 			{
 				if(0 == (KeyREFFlag & 0x04))
 				{
-					keyLed4=0;
-					keyLed3=1;
+					keyLed4=1;
+					keyLed3=0;
 					keyLed2=0;
 					keyLed1=0;
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x08) //滤网置换按键
+		   if(KeyOldFlag & 0x08) //KEY3  Wind KEY
 			{
 				if(0 == (KeyREFFlag & 0x08))
 				{
-					keyLed4=1;
-					keyLed3=0;
+					keyLed4=0;
+					keyLed3=1;
 					keyLed2=0;
 					keyLed1=0;
 				}
