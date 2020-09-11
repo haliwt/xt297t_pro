@@ -129,7 +129,7 @@ void Kscan()
 				{
 					keyLed4=0;
 					keyLed3=0;
-					keyLed2=2;
+					keyLed2=1;
 					keyLed1=0;
 
 				}
@@ -140,7 +140,7 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x04))
 				{
 					keyLed4=0;
-					keyLed3=3;
+					keyLed3=1;
 					keyLed2=0;
 					keyLed1=0;
 
