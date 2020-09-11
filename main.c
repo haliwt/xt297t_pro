@@ -1,11 +1,13 @@
 
 #include <cms.h>
-#include "led.h"
 #include "delay.h"
 #include "mytype.h"
 #include "Touch_Kscan_Library.h"
 #include "REL_Sender.h"
 #include "usart1.h"
+#include "keyled.h"
+#include "slideled.h"
+
 
 /**********************************************************************/
 /*È«¾Ö±äÁ¿ÉùÃ÷*/
@@ -17,6 +19,7 @@ volatile unsigned int buzsec;
 volatile unsigned char DispData;
 
 uint16_t usartNum;
+uint8_t senddata[1];
 /**********************************************************************/
 /**********************************************************************/
 /***********************************************************************
@@ -36,8 +39,8 @@ void Init_ic (void)
 	WDTCON = 0x01;
 	TRISA = 0B00000000;
 	TRISB = 0B00000000;
-	TRISC = 0x01;
-	TRISD = 0x03;
+	TRISC = 0x00;
+	TRISD = 0x00;
 	OPTION_REG = 0;
 	OSCCON = 0x71;
 	PIE1 = 0;
@@ -78,7 +81,7 @@ void Sys_set (void)
 	WDTCON = 0x01;
 	TRISA = 0B00000000;
 	TRISB = 0B00000000;
-	TRISC = 0x01;
+	TRISC = 0x00;
 	TRISD = 0x00;
 	OPTION_REG = 0;
 	PIE1 = 0B00000010;
@@ -107,44 +110,15 @@ void Kscan()
 
 			buzf = 1;
 			buzsec = 600;
-		#if 1
-			if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02))
-			{
-                 Delay_nms (3000);
-				 Delay_nms (1000);
-				 childflg = childflg ^ 0x01;
-				 if((KeyOldFlag & 0x01) && (KeyOldFlag & 0x02)){
-					 if(childflg ==1){
-								
-								ref.childLock = 1;
-								Led4=1;
-					 }
-					 else{
-					 	ref.childLock = 0;
-						Led4=0;
-
-					 }
-				 
-				 }
-	       }
-         
-
-       #endif 
+		
 		if(KeyOldFlag & 0x01)
 		{
 				if(0 == (KeyREFFlag & 0x01)) //¶¨Ê±°´¼ü
 				{
-					KeyREFFlag |= 0x01;
-					timerflg = timerflg ^ 0x01;
-					if(timerflg ==1){
-							Led8=1;
-							ref.timerTim = 1;
-					}
-					else{
-						     Led8=0;
-							ref.timerTim = 0;
-
-					}
+					keyLed4=0;
+					keyLed3=0;
+					keyLed2=0;
+					keyLed1=1;
 				}
 		}
 		
@@ -153,71 +127,227 @@ void Kscan()
 			{
 				if(0 == (KeyREFFlag & 0x02))
 				{
-					KeyREFFlag |= 0x02;
-					windflg ++;
-					if(windflg==1){
-						
-						ref.windlevel =1;  //Ë¯Ãß·ç
-						Led1=1;
-						Led6=0;
-					    Led9=0;
-						Led7 =0;
-						Led8= 0;
-						Led4 =1;
-						Led3 = 0;
-						Led2=0;
-						
-					}
-					else if(windflg ==2){ //2µµ
-						Led9=1;
-						Led2= 1; //¶¨Ê±Æ÷°´¼üµÆ
-						Led4 =0; //ÂËÍø°´¼üµÆ ´ò¿ª
-						Led6=0;
-					    Led1=0;
-						Led7 =0;
-						
-						ref.windlevel =2;
-					}
-					else if(windflg ==3){ //3µµ
-						  Led7 =1;
-						  Led2= 1; //¶¨Ê±Æ÷°´¼üµÆ
-						  Led4 =0; //ÂËÍø°´¼üµÆ ´ò¿ª
-						  Led1=0;
-					      Led6=0;
-						  Led9 =0;
-						  ref.windlevel =3;
-					}
-					else if(windflg ==4){ //Auto 
-						  ref.windlevel =4;
-						  windflg=0;
-						  Led6 =1;
-						  Led2= 1; //¶¨Ê±Æ÷°´¼üµÆ
-						  Led4 =0; //ÂËÍø°´¼üµÆ ´ò¿ª
-						  Led9 =0;
-						  Led1=0;
-					      Led7=0;
-						
-					}
+					keyLed4=0;
+					keyLed3=0;
+					keyLed2=2;
+					keyLed1=0;
 
 				}
 			}
 			
-			
-			if(KeyOldFlag & 0x04) //ÂËÍøÖÃ»»°´¼ü
+		  if(KeyOldFlag & 0x04) //ÂËÍøÖÃ»»°´¼ü
 			{
-
-                 Delay_nms (3000);
-				 Delay_nms (3000);
-				if(KeyOldFlag & 0x04)
+				if(0 == (KeyREFFlag & 0x04))
 				{
-					KeyREFFlag |= 0x04;
-					ref.filterNet =1;
-				    Led3=1;
+					keyLed4=0;
+					keyLed3=3;
+					keyLed2=0;
+					keyLed1=0;
+
 				}
+
 			}
-		
-		
-			
+		   if(KeyOldFlag & 0x08) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x08))
+				{
+					keyLed4=1;
+					keyLed3=0;
+					keyLed2=0;
+					keyLed1=0;
+				}
+
+			}
+		   if(KeyOldFlag & 0x10) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x10))
+				{
+					SldLed_1 =1;
+					SldLed_2 = 0;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+		   if(KeyOldFlag & 0x20) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x20))
+				{
+					SldLed_1 =0;
+					SldLed_2 = 1;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+		   if(KeyOldFlag & 0x40) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x40))
+				{
+				   SldLed_1 =0;
+					SldLed_2 = 0;
+					SldLed_3 =1;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+		   if(KeyOldFlag & 0x80) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x80))
+				{
+					SldLed_1 =0;
+					SldLed_2 = 0;
+					SldLed_3 =0;
+					SldLed_4 =1;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+				}
+
+			}
+		   if(KeyOldFlag & 0x100) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x100))
+				{
+					SldLed_1 =0;
+					SldLed_2 = 0;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =1;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+				}
+
+			}
+		   if(KeyOldFlag & 0x200) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x200))
+				{
+					SldLed_1 =0;
+					SldLed_2 = 0;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =1;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+		   if(KeyOldFlag & 0x400) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x400))
+				{
+					SldLed_1 =0;
+					SldLed_2 = 0;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =1;
+					SldLed_8 =0;
+
+				}
+
+			}
+			if(KeyOldFlag & 0x800) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x800))
+				{
+					SldLed_1 =0;
+					SldLed_2 = 0;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =1;
+
+				}
+
+			}
+			if(KeyOldFlag & 0x1000) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x1000))
+				{
+					SldLed_1 =1;
+					SldLed_2 = 1;
+					SldLed_3 =0;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+			if(KeyOldFlag & 0x2000) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x2000))
+				{
+					SldLed_1 =0;
+					SldLed_2 =1;
+					SldLed_3 =1;
+					SldLed_4 =0;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+			if(KeyOldFlag & 0x4000) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x4000))
+				{
+					SldLed_1 =0;
+					SldLed_2 =0;
+					SldLed_3 =1;
+					SldLed_4 =1;
+					SldLed_5 =0;
+					SldLed_6 =0;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
+			if(KeyOldFlag & 0x8000) //ÂËÍøÖÃ»»°´¼ü
+			{
+				if(0 == (KeyREFFlag & 0x8000))
+				{
+					SldLed_1 =0;
+					SldLed_2 =0;
+					SldLed_3 =0;
+					SldLed_4 =1;
+					SldLed_5 =1;
+					SldLed_6 =1;
+					SldLed_7 =0;
+					SldLed_8 =0;
+
+				}
+
+			}
 		}
 	}
 	else
@@ -227,7 +357,9 @@ void Kscan()
 	}
 	if(usartNum >=10000){
 		usartNum =0;
-	  ref.senddata=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 |ref.childLock << 6|ref.powerflg<<7 ) & 0xff;
+		 Sys_set ();
+		ref.powerflg=1;
+	 
 	  USART1_SendData();
 	}
 }
@@ -258,7 +390,7 @@ mainÖ÷º¯Êı
 ***********************************************************************/
 void main(void)
 {
-
+    static uint8_t poweron=0;
 	asm("clrwdt");
 	USART1_Init();
 	Init_ic();
@@ -271,11 +403,8 @@ void main(void)
 	{
 		OSCCON = 0x71;
 	
-		ref.powerflg = HDKey_Scan(1);
-		if(ref.powerflg==1){
-			LED_RED = 1;
-			ref.powerflg=1;
-		}
+	
+
 		if(tcount >= 32)
 		{
 			tcount = 0;												//Ö÷³ÌĞòÑ­»·4ms
