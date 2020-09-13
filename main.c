@@ -125,41 +125,37 @@ void Kscan()
 					lamp =lamp ^ 0x01;
 					if(lamp==1){
 						ref.lampflg = 1; // turn on lamp
-						keyLed4=0;
-						keyLed3=0;
+					
 						keyLed2=1;
-						keyLed1=0; 
+					
 						sendflg =1;
 					}
 					else{
 						ref.lampflg = 0; //turn off lamp
-						keyLed4=0;
-						keyLed3=0;
+						
 						keyLed2=0;
-						keyLed1=0;
+					
 						sendflg =1;
 					}
 				}
-				
+			}
+		
 			if(KeyOldFlag & 0x02)  //KEY1 ---TIMER_KEY
+			{
 				if(0 == (KeyREFFlag & 0x02))
 				{
 					timerflg = timerflg ^ 0x01;
 					if(timerflg ==1) {//motor up move
 					 
 						ref.timerTim =1;
-						keyLed4=0;
-						keyLed3=0;
-						keyLed2=0;
+					
 						keyLed1=1;
 						sendflg =1;
 					}
 					else{
 					
 						ref.timerTim =0;
-						keyLed4=0;
-						keyLed3=0;
-						keyLed2=0;
+						
 						keyLed1=0; //shut dwon key led
 						sendflg =1;
 					}
@@ -185,19 +181,17 @@ void Kscan()
 						windflg =1;
 						ref.windMotorRunflg = 1; //turn on windows out motor 
 						
-						keyLed4=0;
+						
 						keyLed3=1;
-						keyLed2=0;
-						keyLed1=0;
+					
 						sendflg =1;
 				    }
 					else{
 						ref.windMotorRunflg = 0;
 						
-						keyLed4=0;
+					
 						keyLed3=0;
-						keyLed2=0;
-						keyLed1=0;
+						
 						sendflg =1;
 
 
