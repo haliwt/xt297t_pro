@@ -7,6 +7,7 @@
 #include "usart1.h"
 #include "keyled.h"
 #include "slideled.h"
+#include "hdkey.h"
 
 
 /**********************************************************************/
@@ -20,6 +21,9 @@ volatile unsigned char DispData;
 
 uint16_t usartNum;
 uint8_t senddata[2];
+ uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
+ uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
+
 /**********************************************************************/
 /**********************************************************************/
 /***********************************************************************
@@ -41,8 +45,8 @@ void Init_ic (void)
 	TRISB = 0B00000000;
 	TRISC = 0x00;
 	TRISD = 0x00;
-	Clr(TRISD, 0); //code down load code 
-	Clr(TRISD, 1);
+//	Clr(TRISD, 0); //code down load code 
+//	Clr(TRISD, 1);
 	OPTION_REG = 0;
 	OSCCON = 0x71;
 	PIE1 = 0;
@@ -102,8 +106,8 @@ void Kscan()
 {
 	uint8_t j;
 	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
-	static uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
-	static uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
+//	static uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
+//	static uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
 
 	if(i)
@@ -168,24 +172,8 @@ void Kscan()
 			{
 				if(0 == (KeyREFFlag & 0x04))
 				{
-					powerflg = powerflg ^ 0x01;
-					if(powerflg ==1) {//motor up move
-					   ref.UpDownRunflg =1; //motor up move 
-						keyLed4=1;
-						keyLed3=0;
-						keyLed2=0;
-						keyLed1=0;
-						sendflg =1;
-					}
-					else{
-					    ref.UpDownRunflg =0; //motor down move
-						keyLed4=0; //shut dwon led key
-						keyLed3=0;
-						keyLed2=0;
-						keyLed1=0;
-						sendflg =1;
-
-					}
+					PowerOn_Fun();
+					sendflg =1;
 				}
 
 			}
@@ -387,11 +375,11 @@ void Kscan()
 		//usartNum =0;
 		 Sys_set ();
 		sendflg =0;
-		for(i=0;i<=j;i++){
+		
 			senddata[0]=(ref.UpDownRunflg<<7 |ref.windMotorRunflg<< 4 | ref.timerTim <<1 |ref.lampflg << 0 ) & 0xff;
 			senddata[1]=(slidekey_1 <<0 | slidekey_2<<1 |slidekey_3 <<2|slidekey_4<<3|slidekey_5<<4 | slidekey_6<<5 | slidekey_7<<6 | slidekey_8 << 7);
 			USART1_SendData();
-		}
+		
 	}
 }
 
