@@ -21,8 +21,7 @@ volatile unsigned char DispData;
 
 uint16_t usartNum;
 uint8_t senddata[2];
- uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
- uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
+ 
 
 /**********************************************************************/
 /**********************************************************************/
@@ -106,8 +105,8 @@ void Kscan()
 {
 	uint8_t j;
 	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
-//	static uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
-//	static uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
+	static uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
+	static uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
 
 	if(i)
