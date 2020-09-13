@@ -41,6 +41,8 @@ void Init_ic (void)
 	TRISB = 0B00000000;
 	TRISC = 0x00;
 	TRISD = 0x00;
+	Clr(TRISD, 0); //code down load code 
+	Clr(TRISD, 1);
 	OPTION_REG = 0;
 	OSCCON = 0x71;
 	PIE1 = 0;
@@ -101,6 +103,7 @@ void Kscan()
 	uint8_t j;
 	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
 	static uint8_t lamp =0 ,timerflg =0,windflg =0,powerflg=0,sendflg=0;
+	static uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
 
 	if(i)
@@ -118,7 +121,7 @@ void Kscan()
 				{
 					lamp =lamp ^ 0x01;
 					if(lamp==1){
-						ref.lampflg = 1; //��lamp
+						ref.lampflg = 1; // turn on lamp
 						keyLed4=0;
 						keyLed3=0;
 						keyLed2=1;
@@ -126,10 +129,10 @@ void Kscan()
 						sendflg =1;
 					}
 					else{
-						ref.lampflg = 0; //��lamp
+						ref.lampflg = 0; //turn off lamp
 						keyLed4=0;
 						keyLed3=0;
-						keyLed2=0;//lamp off shut dwon key of led 
+						keyLed2=0;
 						keyLed1=0;
 						sendflg =1;
 					}
@@ -140,6 +143,7 @@ void Kscan()
 					timerflg = timerflg ^ 0x01;
 					if(timerflg ==1) {//motor up move
 					 
+						ref.timerTim =1;
 						keyLed4=0;
 						keyLed3=0;
 						keyLed2=0;
@@ -148,6 +152,7 @@ void Kscan()
 					}
 					else{
 					
+						ref.timerTim =0;
 						keyLed4=0;
 						keyLed3=0;
 						keyLed2=0;
@@ -189,7 +194,7 @@ void Kscan()
 				{
 					windflg =windflg ^ 0x01;
 					if(windflg ==1){
-						ref.windMotoRunrflg = 1; //turn on windows out motor 
+						ref.windMotorRunflg = 1; //turn on windows out motor 
 						
 						keyLed4=0;
 						keyLed3=1;
@@ -198,7 +203,7 @@ void Kscan()
 						sendflg =1;
 				    }
 					else{
-						ref.windMotoRunrflg = 0;
+						ref.windMotorRunflg = 0;
 						
 						keyLed4=0;
 						keyLed3=0;
@@ -212,128 +217,143 @@ void Kscan()
 
 			}
 		  /** slide_touch_key  **/
-		   if(KeyOldFlag & 0x10) //???????????
+		   if(KeyOldFlag & 0x10) //slide_touch_key_1
 			{
 				if(0 == (KeyREFFlag & 0x10))
 				{
-					SldLed_1 =1;
-					SldLed_2 = 0;
-					SldLed_3 =0;
-					SldLed_4 =0;
-					SldLed_5 =0;
-					SldLed_6 =0;
-					SldLed_7 =0;
-					SldLed_8 =0;
+					slidekey_1 = slidekey_1 ^ 0x01;
+					if(slidekey_1==1){
+
+						SldLed_1 =1;
+		
+					}
+					else{
+						SldLed_1 =0;
+
+					}
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x20) //???????????
+		   if(KeyOldFlag & 0x20) //slide_touch_key_2
 			{
 				if(0 == (KeyREFFlag & 0x20))
 				{
-					SldLed_1 =0;
+					slidekey_2 = slidekey_2 ^ 0x01;
+					if(slidekey_2==1){
+
+					
 					SldLed_2 = 1;
-					SldLed_3 =0;
-					SldLed_4 =0;
-					SldLed_5 =0;
-					SldLed_6 =0;
-					SldLed_7 =0;
-					SldLed_8 =0;
+					
+						}
+					else{
+							SldLed_2 = 0;
+
+					}
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x40) //
+		   if(KeyOldFlag & 0x40) //slide_touch_key_3
 			{
 				if(0 == (KeyREFFlag & 0x40))
 				{
-				   SldLed_1 =0;
-					SldLed_2 = 0;
-					SldLed_3 =1;
-					SldLed_4 =0;
-					SldLed_5 =0;
-					SldLed_6 =0;
-					SldLed_7 =0;
-					SldLed_8 =0;
+					slidekey_3 = slidekey_3 ^ 0x01;
+					if(slidekey_3==1){
+
+						SldLed_3 =1;
+					
+						}
+					else{
+							SldLed_3 =0;
+
+					}
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x80) //
+		   if(KeyOldFlag & 0x80) //slide_touch_key_4
 			{
 				if(0 == (KeyREFFlag & 0x80))
 				{
-					SldLed_1 =0;
-					SldLed_2 = 0;
-					SldLed_3 =0;
-					SldLed_4 =1;
-					SldLed_5 =0;
-					SldLed_6 =0;
-					SldLed_7 =0;
-					SldLed_8 =0;
+					
+					slidekey_4 = slidekey_4 ^ 0x01;
+					if(slidekey_4==1){
+					
+					    SldLed_4 =1;
+					
+						}
+					else{
+
+						SldLed_4 =0;
+					}
 				}
 
 			}
-		   if(KeyOldFlag & 0x100) //
+		   if(KeyOldFlag & 0x100) ////slide_touch_key_5
 			{
 				if(0 == (KeyREFFlag & 0x100))
 				{
-					SldLed_1 =0;
-					SldLed_2 = 0;
-					SldLed_3 =0;
-					SldLed_4 =0;
-					SldLed_5 =1;
-					SldLed_6 =0;
-					SldLed_7 =0;
-					SldLed_8 =0;
+					slidekey_5 = slidekey_5 ^ 0x01;
+					if(slidekey_5==1){
+							SldLed_5 =1;
+						}
+					else{
+						
+					SldLed_5 =0;
+
+					}
+					
 				}
 
 			}
-		   if(KeyOldFlag & 0x200) //???????????
+		   if(KeyOldFlag & 0x200) //slide_touch_key_6
 			{
 				if(0 == (KeyREFFlag & 0x200))
 				{
-					SldLed_1 =0;
-					SldLed_2 = 0;
-					SldLed_3 =0;
-					SldLed_4 =0;
-					SldLed_5 =0;
+					slidekey_6 = slidekey_6 ^ 0x01;
+					if(slidekey_6==1){
+					
 					SldLed_6 =1;
-					SldLed_7 =0;
-					SldLed_8 =0;
+						}
+					else{
+						SldLed_6 =0;
+
+					}
+					
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x400) //???????????
+		   if(KeyOldFlag & 0x400) //slide_touch_key_7
 			{
 				if(0 == (KeyREFFlag & 0x400))
 				{
-					SldLed_1 =0;
-					SldLed_2 = 0;
-					SldLed_3 =0;
-					SldLed_4 =0;
-					SldLed_5 =0;
-					SldLed_6 =0;
+					slidekey_7 = slidekey_7 ^ 0x01;
+					if(slidekey_7==1){
+				
 					SldLed_7 =1;
-					SldLed_8 =0;
+						}
+					else{
+						SldLed_7 =0;
+
+					}
 
 				}
 
 			}
-			if(KeyOldFlag & 0x800) //???????????
+			if(KeyOldFlag & 0x800) //slide_touch_key_8
 			{
 				if(0 == (KeyREFFlag & 0x800))
 				{
-					SldLed_1 =0;
-					SldLed_2 = 0;
-					SldLed_3 =0;
-					SldLed_4 =0;
-					SldLed_5 =0;
-					SldLed_6 =0;
-					SldLed_7 =0;
+					slidekey_8 = slidekey_8 ^ 0x01;
+					if(slidekey_8==1){
+				
 					SldLed_8 =1;
+						}
+					else{
+						SldLed_8 =0;
+					}
 
 				}
 
@@ -352,7 +372,7 @@ void Kscan()
 		sendflg =0;
 		for(i=0;i<=j;i++){
 			senddata[0]=(ref.windMotorRunflg<< 4 | ref.timerTim <<1 |ref.lampflg << 0 |ref.powerflg <<7) & 0xff;
-			senddata[1]=();
+			senddata[1]=(slidekey_1 <<0 | slidekey_2<<1 |slidekey_3 <<2|slidekey_4<<3|slidekey_5<<4 | slidekey_6<<5 | slidekey_7<<6 | slidekey_8 << 7);
 			USART1_SendData();
 		}
 	}

@@ -77,6 +77,8 @@ void USART1_SendData(void)
 		delay_ns(100);//delay_ns(100);
 		TXREG1   = senddata[0];  //数据
 		delay_ns(100);//delay_ns(200);
+		TXREG1   = senddata[1];  //数据
+		delay_ns(100);//delay_ns(200);
 		TXREG1   = BCC();
 		delay_ns(100); 	//delay_ns(400); 	
 		
@@ -99,7 +101,7 @@ uint8_t BCC(void)
 	 
 	 //senddata[0]=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 |ref.childLock <<6| ref.powerflg <<7) & 0xff;
 	 // senddata[0]=ref.senddata ;
-      tembyte =  sbytes[0]^ senddata[0];
+      tembyte =  sbytes[0]^ senddata[0]^senddata[1];
     
     return tembyte;
 
