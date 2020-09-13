@@ -6,12 +6,12 @@
 
 struct senddata{
      uint8_t windlevel ;
-	 uint8_t senddata;
-	 uint8_t filterNet :1;
-	 uint8_t timerTim :1;
-	 uint8_t sleep :1;
-	 uint8_t childLock:1;
+	 uint8_t windMotorRunflg : 1;  //室外的风机打开电源
+	 uint8_t lampflg : 1;   //lampflg = 1 on ,lampflg =0 off
+	 uint8_t timerTim :1;   //timer
 	 uint8_t powerflg:1;
+	 uint8_t UpDownRunflg :1; //motor =1 up move motor =0 down move
+	 
 
 };
 extern struct  senddata ref;
