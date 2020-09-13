@@ -102,7 +102,7 @@ void Kscan()
 {
 	uint8_t j;
 	static unsigned int KeyOldFlag = 0,KeyREFFlag = 0;
-	static uint8_t lamp =0 ,timerflg =0,windflg =0,powerflg=0,sendflg=0;
+	static uint8_t lamp ,timerflg ,windflg ,powerflg,sendflg;
 	static uint8_t slidekey_1 ,slidekey_2,slidekey_3,slidekey_4,slidekey_5,slidekey_6,slidekey_7,slidekey_8;
 	unsigned int i = (unsigned int)((KeyFlag[1]<<8) | KeyFlag[0]);
 
@@ -137,6 +137,7 @@ void Kscan()
 						sendflg =1;
 					}
 				}
+				
 			if(KeyOldFlag & 0x02)  //KEY1 ---TIMER_KEY
 				if(0 == (KeyREFFlag & 0x02))
 				{
@@ -194,6 +195,7 @@ void Kscan()
 				{
 					windflg =windflg ^ 0x01;
 					if(windflg ==1){
+						windflg =1;
 						ref.windMotorRunflg = 1; //turn on windows out motor 
 						
 						keyLed4=0;
@@ -225,10 +227,12 @@ void Kscan()
 					if(slidekey_1==1){
 
 						SldLed_1 =1;
+						sendflg =1;
 		
 					}
 					else{
 						SldLed_1 =0;
+						sendflg =1;
 
 					}
 
@@ -244,10 +248,12 @@ void Kscan()
 
 					
 					SldLed_2 = 1;
+					sendflg =1;
 					
 						}
 					else{
 							SldLed_2 = 0;
+							sendflg =1;
 
 					}
 
@@ -262,10 +268,12 @@ void Kscan()
 					if(slidekey_3==1){
 
 						SldLed_3 =1;
+						sendflg =1;
 					
 						}
 					else{
 							SldLed_3 =0;
+							sendflg =1;
 
 					}
 
@@ -281,11 +289,13 @@ void Kscan()
 					if(slidekey_4==1){
 					
 					    SldLed_4 =1;
+						sendflg =1;
 					
 						}
 					else{
 
 						SldLed_4 =0;
+						sendflg =1;
 					}
 				}
 
@@ -297,10 +307,12 @@ void Kscan()
 					slidekey_5 = slidekey_5 ^ 0x01;
 					if(slidekey_5==1){
 							SldLed_5 =1;
+							sendflg =1;
 						}
 					else{
 						
 					SldLed_5 =0;
+					sendflg =1;
 
 					}
 					
@@ -314,11 +326,12 @@ void Kscan()
 					slidekey_6 = slidekey_6 ^ 0x01;
 					if(slidekey_6==1){
 					
-					SldLed_6 =1;
+							SldLed_6 =1;
+							sendflg =1;
 						}
 					else{
 						SldLed_6 =0;
-
+						sendflg =1;
 					}
 					
 
@@ -332,10 +345,12 @@ void Kscan()
 					slidekey_7 = slidekey_7 ^ 0x01;
 					if(slidekey_7==1){
 				
-					SldLed_7 =1;
+						SldLed_7 =1;
+						sendflg =1;
 						}
 					else{
 						SldLed_7 =0;
+						sendflg =1;
 
 					}
 
@@ -349,10 +364,12 @@ void Kscan()
 					slidekey_8 = slidekey_8 ^ 0x01;
 					if(slidekey_8==1){
 				
-					SldLed_8 =1;
+						SldLed_8 =1;
+						sendflg =1;
 						}
 					else{
 						SldLed_8 =0;
+						sendflg =1;
 					}
 
 				}
@@ -371,7 +388,7 @@ void Kscan()
 		 Sys_set ();
 		sendflg =0;
 		for(i=0;i<=j;i++){
-			senddata[0]=(ref.windMotorRunflg<< 4 | ref.timerTim <<1 |ref.lampflg << 0 |ref.powerflg <<7) & 0xff;
+			senddata[0]=(ref.UpDownRunflg<<7 |ref.windMotorRunflg<< 4 | ref.timerTim <<1 |ref.lampflg << 0 ) & 0xff;
 			senddata[1]=(slidekey_1 <<0 | slidekey_2<<1 |slidekey_3 <<2|slidekey_4<<3|slidekey_5<<4 | slidekey_6<<5 | slidekey_7<<6 | slidekey_8 << 7);
 			USART1_SendData();
 		}
