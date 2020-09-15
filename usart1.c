@@ -4,7 +4,34 @@ struct  senddata ref;
 
 
 extern uint8_t senddata[2];
+/*************************************************************************
+ 	*
+	*Function Name: void delay_ms(unsigned char t)
+	*Function : BCC checksum code 1ms
+	*Input Ref: 
+	*Output Ref:No
+	*
+******************************************************************************/
 
+void delay_ns(unsigned char t)
+{
+  unsigned int j,i;
+  for(j=t;j>0;j--){
+	  for(i=0;i<50;i++){
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+  asm("nop");
+	  }
+
+}
+}
 
 
 /*************************************************************************

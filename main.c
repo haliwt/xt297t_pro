@@ -57,7 +57,7 @@ void Init_ic (void)
 	
 	
 	
-//	INTCON = 0xC0;			//��������δ�����ε��жϡ������ж�
+//	INTCON = 0xC0;			//ÔÊÐíËùÓÐÎ´±»ÆÁ±ÎµÄÖÐ¶Ï¡¢ÍâÉèÖÐ¶Ï
 
 
 }
@@ -127,7 +127,7 @@ void Kscan()
 		
 		if(KeyOldFlag & 0x01)
 		{
-			 if(0 == (KeyREFFlag & 0x01)) //KEY 2 LAMP_KEY  ���� = 1 �½���
+			 if(0 == (KeyREFFlag & 0x01)) //KEY 2 LAMP_KEY  ²¶»ñ = 1 ÏÂ½µÑØ
 				{
 					lamp =lamp ^ 0x01;
 					if(lamp==1&&keyevent ==0){
@@ -221,7 +221,7 @@ void Kscan()
 				}
 			}
 			
-		  if(KeyOldFlag & 0x04) //KEY4 POWER_KEY --���� =2
+		  if(KeyOldFlag & 0x04) //KEY4 POWER_KEY --²¶»ñ =2
 		  {
 				if(0 == (KeyREFFlag & 0x04))
 				{
@@ -232,26 +232,18 @@ void Kscan()
 						keyLed4=1;
 						keyevent =1;
 						
-					
-						
-						PRB4=0; //data P25
+					   PRB4=0; //data P25
 						delay_ms(4);
 						PRB4=1;
  					    delay_ms(4);
 						PRB4=0; //data P25
 						delay_ms(4);
 						PRB4=1;
-						 
-						
-						
-					}
+				   }
 					else if(keyevent !=1){
 					
 					    ref.UpDownRunflg =0; //motor down move
 						keyLed4=0; //shut dwon led key
-					
-						
-						
 						PRB4=0; //data P25
 						delay_ms(4);
 						PRB4=1;
@@ -260,10 +252,7 @@ void Kscan()
 						delay_ms(4);
 						PRB4=1;
 						 
-						 
-						
-
-					}
+						 }
    
 					
 					
@@ -301,7 +290,7 @@ void Kscan()
 					
 						keyLed3=0;
 						
-					   PRB4=0; //data P25
+					    PRB4=0; //data P25
 						delay_ms(2);
 						PRB4=1;
  					    delay_ms(2);
@@ -319,162 +308,444 @@ void Kscan()
 
 			}
 		  /** slide_touch_key  **/
-		   if(KeyOldFlag & 0x10) //slide_touch_key_1
+		   if(KeyOldFlag & 0x10) //slide_touch_key_1 capture =1
 			{
 				if(0 == (KeyREFFlag & 0x10))
 				{
 					slidekey_1 = slidekey_1 ^ 0x01;
-					if(slidekey_1==1){
-
+					if(slidekey_1==1 && keyevent ==0){
+						keyevent =1;
 						SldLed_1 =1;
-						sendflg =1;
+						
+						PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						PRB4=0; //data P25
+						delay_ms(20);
+						PRB4=1;
+
 		
 					}
-					else{
-						SldLed_1 =0;
+					else if(keyevent !=1){ 
+						keyevent =1;
+						SldLed_1 =0; //slide touch key 
 						sendflg =1;
+						PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						PRB4=0; //data P25
+						delay_ms(20);
+						PRB4=1;
+						
 
 					}
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x20) //slide_touch_key_2
+		/*************/
+			
+		   if(KeyOldFlag & 0x20) //slide_touch_key_2   cpature =2
 			{
 				if(0 == (KeyREFFlag & 0x20))
 				{
 					slidekey_2 = slidekey_2 ^ 0x01;
-					if(slidekey_2==1){
-
-					
+					if(slidekey_2==1 && keyevent ==0){
+						 keyevent =1;
+					keyevent =1;
 					SldLed_2 = 1;
 					sendflg =1;
+					PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
+ 					    delay_ms(4);
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
+						RB3=1;
 					
 						}
-					else{
+					else if(keyevent !=1){
+								keyevent =1;
 							SldLed_2 = 0;
 							sendflg =1;
+							PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 
+					PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
+ 					    delay_ms(4);
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
+						RB3=1;
 					}
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x40) //slide_touch_key_3
+			
+		   if(KeyOldFlag & 0x40) //slide_touch_key_3 capture =3
 			{
 				if(0 == (KeyREFFlag & 0x40))
 				{
 					slidekey_3 = slidekey_3 ^ 0x01;
-					if(slidekey_3==1){
-
+					if(slidekey_3==1&& keyevent ==0){
+						keyevent =1;
 						SldLed_3 =1;
-						sendflg =1;
+	
+						PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						 PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(2);
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+						delay_ms(2);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						RB3=1;
 					
 						}
-					else{
+					else if(keyevent !=1){
+							keyevent =1;
 							SldLed_3 =0;
 							sendflg =1;
+							PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						    PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(2);
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+						delay_ms(2);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						RB3=1;
 
 					}
 
 				}
 
 			}
-		   if(KeyOldFlag & 0x80) //slide_touch_key_4
+			
+		   if(KeyOldFlag & 0x80) //slide_touch_key_4 capture =4
 			{
 				if(0 == (KeyREFFlag & 0x80))
 				{
 					
 					slidekey_4 = slidekey_4 ^ 0x01;
-					if(slidekey_4==1){
-					
+					if(slidekey_4==1&& keyevent ==0){
+					 keyevent =1;
 					   SldLed_4 =1;
 						sendflg =1;
+						PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+					    PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(2);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1; //data P25
+						RB3=1;
 					
 						}
-					else{
+					else if(keyevent !=1){
 
+					keyevent =1;
 						SldLed_4 =0;
 						sendflg =1;
+						PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						 PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(2);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1; //data P25
+						RB3=1;
 					}
 				}
 
 			}
-		   if(KeyOldFlag & 0x100) ////slide_touch_key_5
+		
+		   if(KeyOldFlag & 0x100) ////slide_touch_key_5  capture =5
 			{
 				if(0 == (KeyREFFlag & 0x100))
 				{
 					slidekey_5 = slidekey_5 ^ 0x01;
-					if(slidekey_5==1){
+					if(slidekey_5==1&& keyevent ==0){
 							SldLed_5 =1;
 							sendflg =1;
+							PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+							keyevent =1;
+
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						RB3=1;
 						}
-					else{
-						
+					else if(keyevent !=1){
+					keyevent =1;	
 					SldLed_5 =0;
 					sendflg =1;
+					    PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+						
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						RB3=1;
 
 					}
 					
 				}
 
 			}
-		   if(KeyOldFlag & 0x200) //slide_touch_key_6
+	
+		   if(KeyOldFlag & 0x200) //slide_touch_key_6 capture =  56 
 			{
 				if(0 == (KeyREFFlag & 0x200))
 				{
 					slidekey_6 = slidekey_6 ^ 0x01;
-					if(slidekey_6==1){
-					
+					if(slidekey_6==1&& keyevent ==0){
+					 keyevent =1;
 							SldLed_6 =1;
 							sendflg =1;
-						}
-					else{
+							 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+							
+						/*****6*****/
+						PRB4=0; //data P25
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						/********6********/
+						RB3=1;
+					}
+					else if(keyevent !=1){
+						keyevent =1;
 						SldLed_6 =0;
 						sendflg =1;
-					}
-					
+						 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+						
 
-				}
-
+						/*****6*****/
+						PRB4=0; //data P25
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						/********6********/
+						RB3 =1;
+						}
+				  }
 			}
-		   if(KeyOldFlag & 0x400) //slide_touch_key_7
+		
+		   if(KeyOldFlag & 0x400) //slide_touch_key_7  capture = 54
 			{
 				if(0 == (KeyREFFlag & 0x400))
 				{
 					slidekey_7 = slidekey_7 ^ 0x01;
-					if(slidekey_7==1){
-				
+					if(slidekey_7==1&& keyevent ==0){
+						 keyevent =1;
 						SldLed_7 =1;
 						sendflg =1;
+						 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+						
+
+						 PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						RB4=1;
+					
+						RB3=1;
+						
 						}
-					else{
+					else if(keyevent !=1){
+						keyevent =1;
 						SldLed_7 =0;
 						sendflg =1;
+						 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+							
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						RB4=1;
+
+						RB3=1;
+						
 
 					}
 
 				}
 
 			}
-			if(KeyOldFlag & 0x800) //slide_touch_key_8
+	
+			if(KeyOldFlag & 0x800) //slide_touch_key_8 capture =64
 			{
 				if(0 == (KeyREFFlag & 0x800))
 				{
 					slidekey_8 = slidekey_8 ^ 0x01;
-					if(slidekey_8==1){
-				
+					if(slidekey_8==1&& keyevent ==0){
+				       keyevent =1;
 						SldLed_8 =1;
 						sendflg =1;
+						 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+
+						PRB4=0; //data P25
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+
+						RB3=1;
+
+
 						}
-					else{
+					else if(keyevent !=1){
+						keyevent =1;
 						SldLed_8 =0;
 						sendflg =1;
+						 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
+						PRB4=0; //data P25
+						delay_ms(2);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						RB3=1;
 					}
-
+     
 				}
 
 			}
+
 		}
 	
 	else
@@ -498,7 +769,7 @@ void interrupt time0(void)
 		tcount ++;
 		__CMS_GetTouchKeyValue();
 		
-		usartNum ++ ;//125us  8�� =1ms
+		usartNum ++ ;//125us  8´Î =1ms
 		
 		
 	
