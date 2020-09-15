@@ -124,6 +124,7 @@ void Kscan()
 
 			buzf = 1;
 			buzsec = 600;
+		    keyevent =0;
 		
 		if(KeyOldFlag & 0x01)
 		{
@@ -139,15 +140,11 @@ void Kscan()
 					     RB4= 0;
 						 delay_ms(10);
 						 RB4=1;
-						
-						
-						
-					
-						
+
 					}
 					else if(keyevent !=1){
 						ref.lampflg = 0; //turn off lamp
-						
+						keyevent =1;
 						keyLed2=0;
 					
 						 RB4= 0;
@@ -194,6 +191,7 @@ void Kscan()
 					}
 					else if(keyevent!=1){
 					
+						keyevent =1;
 						ref.timerTim =0;
 						
 						keyLed1=0; //shut dwon key led
@@ -242,6 +240,7 @@ void Kscan()
 				   }
 					else if(keyevent !=1){
 					
+					    keyevent=1;
 					    ref.UpDownRunflg =0; //motor down move
 						keyLed4=0; //shut dwon led key
 						PRB4=0; //data P25
@@ -264,10 +263,10 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x08))
 				{
 					windflg =windflg ^ 0x01;
-					if(windflg ==1){
+					if(windflg ==1 && keyevent ==0){
 						windflg =1;
 						ref.windMotorRunflg = 1; //turn on windows out motor 
-						
+						keyevent =1;
 						keyLed3=1;
 						
 					    PRB4=0; //data P25
@@ -284,9 +283,9 @@ void Kscan()
 						
 						
 				    }
-					else{
+					else if(keyevent !=1){
 						ref.windMotorRunflg = 0;
-						
+						keyevent =1;
 					
 						keyLed3=0;
 						
@@ -307,9 +306,11 @@ void Kscan()
 				}
 
 			}
-		  /** slide_touch_key  **/
+		  /******************* slide_touch_key  *****************************/
+		  /******************************************************************/
 		   if(KeyOldFlag & 0x10) //slide_touch_key_1 capture =1
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x10))
 				{
 					slidekey_1 = slidekey_1 ^ 0x01;
@@ -322,7 +323,7 @@ void Kscan()
 						PRB4=0; //data P25
 						delay_ms(20);
 						PRB4=1;
-
+						slidekey_1 =1;
 		
 					}
 					else if(keyevent !=1){ 
@@ -334,6 +335,7 @@ void Kscan()
 						PRB4=0; //data P25
 						delay_ms(20);
 						PRB4=1;
+						slidekey_1 =0;
 						
 
 					}
@@ -341,10 +343,10 @@ void Kscan()
 				}
 
 			}
-		/*************/
 			
 		   if(KeyOldFlag & 0x20) //slide_touch_key_2   cpature =2
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x20))
 				{
 					slidekey_2 = slidekey_2 ^ 0x01;
@@ -363,8 +365,9 @@ void Kscan()
 						delay_ms(4);
 						PRB4=1;
 						RB3=1;
+						slidekey_2 =1;
 					
-						}
+					}
 					else if(keyevent !=1){
 								keyevent =1;
 							SldLed_2 = 0;
@@ -379,6 +382,8 @@ void Kscan()
 						delay_ms(4);
 						PRB4=1;
 						RB3=1;
+
+						slidekey_2 =0;
 					}
 
 				}
@@ -387,6 +392,7 @@ void Kscan()
 			
 		   if(KeyOldFlag & 0x40) //slide_touch_key_3 capture =3
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x40))
 				{
 					slidekey_3 = slidekey_3 ^ 0x01;
@@ -408,6 +414,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1;
 						RB3=1;
+						slidekey_3 =1;
 					
 						}
 					else if(keyevent !=1){
@@ -428,6 +435,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1;
 						RB3=1;
+						slidekey_3 =0;
 
 					}
 
@@ -437,6 +445,7 @@ void Kscan()
 			
 		   if(KeyOldFlag & 0x80) //slide_touch_key_4 capture =4
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x80))
 				{
 					
@@ -463,6 +472,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1; //data P25
 						RB3=1;
+						slidekey_4 =1;
 					
 						}
 					else if(keyevent !=1){
@@ -488,6 +498,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1; //data P25
 						RB3=1;
+						slidekey_4 =0;
 					}
 				}
 
@@ -495,6 +506,7 @@ void Kscan()
 		
 		   if(KeyOldFlag & 0x100) ////slide_touch_key_5  capture =5
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x100))
 				{
 					slidekey_5 = slidekey_5 ^ 0x01;
@@ -524,6 +536,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1;
 						RB3=1;
+						slidekey_5 =1;
 						}
 					else if(keyevent !=1){
 					keyevent =1;	
@@ -551,6 +564,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1;
 						RB3=1;
+						slidekey_5 =0;
 
 					}
 					
@@ -560,6 +574,7 @@ void Kscan()
 	
 		   if(KeyOldFlag & 0x200) //slide_touch_key_6 capture =  56 
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x200))
 				{
 					slidekey_6 = slidekey_6 ^ 0x01;
@@ -592,6 +607,7 @@ void Kscan()
 						PRB4=1;
 						/********6********/
 						RB3=1;
+						slidekey_6 =1;
 					}
 					else if(keyevent !=1){
 						keyevent =1;
@@ -623,12 +639,14 @@ void Kscan()
 						PRB4=1;
 						/********6********/
 						RB3 =1;
+						slidekey_6 =0;
 						}
 				  }
 			}
 		
 		   if(KeyOldFlag & 0x400) //slide_touch_key_7  capture = 54
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú
 				if(0 == (KeyREFFlag & 0x400))
 				{
 					slidekey_7 = slidekey_7 ^ 0x01;
@@ -655,6 +673,7 @@ void Kscan()
 						RB4=1;
 					
 						RB3=1;
+						slidekey_7 =1;
 						
 						}
 					else if(keyevent !=1){
@@ -679,7 +698,7 @@ void Kscan()
 						RB4=1;
 
 						RB3=1;
-						
+						slidekey_7 =0;
 
 					}
 
@@ -689,6 +708,7 @@ void Kscan()
 	
 			if(KeyOldFlag & 0x800) //slide_touch_key_8 capture =64
 			{
+				 PRB3 =0 ;   //·çËÙ·çÁ¿µ÷½Ú 
 				if(0 == (KeyREFFlag & 0x800))
 				{
 					slidekey_8 = slidekey_8 ^ 0x01;
@@ -716,6 +736,7 @@ void Kscan()
 						PRB4=1;
 
 						RB3=1;
+						slidekey_8 =1;
 
 
 						}
@@ -740,6 +761,7 @@ void Kscan()
 						delay_ms(1);
 						PRB4=1;
 						RB3=1;
+						slidekey_8 =0;
 					}
      
 				}
@@ -753,6 +775,31 @@ void Kscan()
 		KeyOldFlag = 0;
 		KeyREFFlag = 0;
 	}
+
+	if(slidekey_1 ==1)SldLed_1 =1;
+	else SldLed_1 =0;
+
+	if(slidekey_2 ==1)SldLed_2 =1;
+	else SldLed_2 =0;
+
+	if(slidekey_3 ==1)SldLed_3 =1;
+	else SldLed_3 =0;
+
+	if(slidekey_4 ==1)SldLed_4 =1;
+	else SldLed_4 =0;
+
+	if(slidekey_5 ==1)SldLed_5 =1;
+	else SldLed_5 =0;
+
+	if(slidekey_6 ==1)SldLed_6 =1;
+	else SldLed_6 =0;
+
+	if(slidekey_7 ==1)SldLed_7 =1;
+	else SldLed_7 =0;
+
+	if(slidekey_8 ==1)SldLed_8 =1;
+	else SldLed_8 =0;
+
 	
 }
 }
@@ -778,6 +825,8 @@ void interrupt time0(void)
 	{
 		PIR1 = 0;
 		PIR2 = 0;
+		PRB4=1;
+	    PRB3=1;
 	}
 }
 
@@ -805,6 +854,8 @@ void main(void)
 
 		if(tcount >= 32)
 		{
+			 PRB4=1;
+	         PRB3=1;
 			tcount = 0;												//?????????4ms
 			Sys_set();
 			//Display();
