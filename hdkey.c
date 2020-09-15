@@ -15,7 +15,7 @@
 void PowerOn_Fun(void)
 {
 	 static  uint8_t power =0;
-   power =power ^ 0x01;
+                    power =power ^ 0x01;
 					if(power==1) {//motor up move
 					   ref.UpDownRunflg =1; //motor up move 
 						keyLed4=1;

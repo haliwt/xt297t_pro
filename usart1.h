@@ -3,7 +3,8 @@
 #include <cms.h>
 #include "mytype.h"
 
-
+#define PRB4   RB4 //P25 ---数据信号
+#define PRB3    RB3 //P26 ---控制信号
 struct senddata{
      uint8_t windlevel ;
 	 uint8_t windMotorRunflg : 1;  //瀹ゅ鐨勯鏈烘墦寮�鐢垫簮
@@ -18,7 +19,7 @@ extern struct  senddata ref;
 
 void USART1_Init(void);
 void USART1_SendData(void);
-void delay_ns(unsigned char t);
+void delay_ms(unsigned char t);
 void Set_Usart_Async(void);
 
 uint8_t BCC(void);

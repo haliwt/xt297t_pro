@@ -31,13 +31,6 @@ void SendData_Signal(uint8_t senddata)
 
 	   break;
 
-	   case 3: //风速 2档
-	   
-
-
-
-
-
 	}
 
 
@@ -45,6 +38,6 @@ void SendData_Signal(uint8_t senddata)
 
 
 }
-
 #endif 
+
 

@@ -9,17 +9,18 @@ extern uint8_t senddata[2];
 
 /*************************************************************************
  	*
-	*Function Name: uint8_t BCC(uint8_t *sbytes,uint8_t width)
-	*Function : BCC checksum code
+	*Function Name: void delay_ms(unsigned char t)
+	*Function : BCC checksum code 1ms
 	*Input Ref: 
 	*Output Ref:No
 	*
 ******************************************************************************/
 
-void delay_ns(unsigned char t)
+void delay_ms(unsigned char t)
 {
-  unsigned int j;
+  unsigned int j,i;
   for(j=t;j>0;j--){
+	  for(i=0;i<100;i++){
   asm("nop");
   asm("nop");
   asm("nop");
@@ -30,6 +31,7 @@ void delay_ns(unsigned char t)
   asm("nop");
   asm("nop");
   asm("nop");
+	  }
 
 }
 }
@@ -45,7 +47,7 @@ void USART1_Init(void)
 {
 
 	//OSCCON = 0x71;				//8M内部时钟
-	INTCON = 0;
+	//INTCON = 0;
 	
 	PIR1 = 0;
 	PIE1 = 0;
@@ -57,7 +59,7 @@ void USART1_Init(void)
     TRISB = 0B00000000;
 	PORTB = 0B00000000;
 	/*初始化USART通信模块*/
-	Set_Usart_Async();
+	//Set_Usart_Async();
 
 }
 /*************************************************************************
@@ -74,13 +76,13 @@ void USART1_SendData(void)
 	    //senddata[0]=(ref.windlevel  | ref.filterNet<< 4 | ref.timerTim <<5 |ref.childLock <<6 | ref.powerflg <<7) & 0xff;
 		
         TXREG1   = 0xAA; //Recebuffer[0];//Recebuffer[0] ;
-		delay_ns(100);//delay_ns(100);
-		TXREG1   = senddata[0];  //数据
-		delay_ns(100);//delay_ns(200);
-		TXREG1   = senddata[1];  //数据
-		delay_ns(100);//delay_ns(200);
+	//	delay_ns(100);//delay_ns(100);
+		TXREG1   = 0xAB;//senddata[0];  //数据
+		//delay_ns(100);//delay_ns(200);
+		TXREG1   = 0xDC;//senddata[1];  //数据
+		//delay_ns(100);//delay_ns(200);
 		TXREG1   = BCC();
-		delay_ns(100); 	//delay_ns(400); 	
+		//delay_ns(100); 	//delay_ns(400); 	
 		
 
 }
