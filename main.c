@@ -127,7 +127,7 @@ void Kscan()
 		
 		if(KeyOldFlag & 0x01)
 		{
-			 if(0 == (KeyREFFlag & 0x01)) //KEY 2 LAMP_KEY  捕获 = 2 下降沿
+			 if(0 == (KeyREFFlag & 0x01)) //KEY 2 LAMP_KEY  捕获 = 1 下降沿
 				{
 					lamp =lamp ^ 0x01;
 					if(lamp==1&&keyevent ==0){
@@ -136,14 +136,9 @@ void Kscan()
 						keyLed2=1;
 						
 						
-					
-						PRB4=0; //data P25
-						delay_ms(4);
-						PRB4=1;
- 					    delay_ms(4);
-						PRB4=0; //data P25
-						delay_ms(4);
-						PRB4=1;
+					     RB4= 0;
+						 delay_ms(10);
+						 RB4=1;
 						
 						
 						
@@ -155,13 +150,9 @@ void Kscan()
 						
 						keyLed2=0;
 					
-						PRB4=0; //data P25
-						delay_ms(4);
-						PRB4=1;
- 					    delay_ms(4);
-						PRB4=0; //data P25
-						delay_ms(4);
-						PRB4=1;
+						 RB4= 0;
+						 delay_ms(10);
+						 RB4=1;
 						
 						
 					}
@@ -179,12 +170,17 @@ void Kscan()
 						keyevent =1;
 						keyLed1=1;
 						
+						
 						PRB4=0; //data P25
-						delay_ms(2);
+						delay_ms(1);
 						PRB4=1;
- 					    delay_ms(2);
+ 					    delay_ms(1);
 						PRB4=0; //data P25
-						delay_ms(2);
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
 						PRB4=1;
 						delay_ms(1);
 						PRB4=0; //data P25
@@ -202,13 +198,9 @@ void Kscan()
 						
 						keyLed1=0; //shut dwon key led
 						PRB4=0; //data P25
-						delay_ms(2);
-						PRB4=1;
- 					    delay_ms(2);
-						PRB4=0; //data P25
-						delay_ms(2);
-						PRB4=1;
 						delay_ms(1);
+						PRB4=1;
+ 					    delay_ms(1);
 						PRB4=0; //data P25
 						delay_ms(1);
 						PRB4=1;
@@ -216,13 +208,20 @@ void Kscan()
 						PRB4=0; //data P25
 						delay_ms(1);
 						PRB4=1;
-						
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
 					}
 
 				}
 			}
 			
-		  if(KeyOldFlag & 0x04) //KEY4 POWER_KEY --捕获 =1
+		  if(KeyOldFlag & 0x04) //KEY4 POWER_KEY --捕获 =2
 		  {
 				if(0 == (KeyREFFlag & 0x04))
 				{
@@ -233,11 +232,15 @@ void Kscan()
 						keyLed4=1;
 						keyevent =1;
 						
-						 RB4= 0;
-						 delay_ms(18);
-						 RB4=1;
+					
 						
-						
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
+ 					    delay_ms(4);
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
 						 
 						
 						
@@ -247,10 +250,15 @@ void Kscan()
 					    ref.UpDownRunflg =0; //motor down move
 						keyLed4=0; //shut dwon led key
 					
-						 RB4= 0;
-						 delay_ms(18);
-						 RB4=1;
 						
+						
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
+ 					    delay_ms(4);
+						PRB4=0; //data P25
+						delay_ms(4);
+						PRB4=1;
 						 
 						 
 						
