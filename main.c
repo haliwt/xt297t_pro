@@ -124,14 +124,12 @@ void Kscan()
 
 			buzf = 1;
 			buzsec = 600;
-		    keyevent =0;
 		
-		if(KeyOldFlag & 0x01)
+		if(KeyOldFlag & 0x02)
 		{
-			 if(0 == (KeyREFFlag & 0x01)) //KEY 2 LAMP_KEY  cpture =1
+			 if(0 == (KeyREFFlag & 0x02)) //KEY 2 Timer KEY   ²¶»ñ = 1 ÏÂ½µÑØ
 				{
-					lamp =lamp ^ 0x01;
-					
+					lamp =lamp ^ 0x02;
 					if(lamp==1&&keyevent ==0){
 						ref.lampflg = 1; // turn on lamp
 					    keyevent =1;
@@ -141,11 +139,11 @@ void Kscan()
 					     RB4= 0;
 						 delay_ms(10);
 						 RB4=1;
-
-					}
+						
+						}
 					else if(keyevent !=1){
 						ref.lampflg = 0; //turn off lamp
-						keyevent =1;
+						
 						keyLed2=0;
 					
 						 RB4= 0;
@@ -157,60 +155,74 @@ void Kscan()
 				}
 			}
 		
-			if(KeyOldFlag & 0x02)  //KEY1 ---TIMER_KEY capture = 4
+			//if(KeyOldFlag & 0x02)  //KEY1 ---LAMP_KEY capture = 5  //lamp key
+			if(KeyOldFlag & 0x01)
 			{
-				if(0 == (KeyREFFlag & 0x02))
+				if(0 == (KeyREFFlag & 0x01))
 				{
-					
 					timerflg = timerflg ^ 0x01;
 					if(timerflg ==1&& keyevent==0) {//motor up move
 					 
 						ref.timerTim =1;
 						keyevent =1;
 						keyLed1=1;
-
-					      /******* 4**************/
-					    PRB4=0; //data P25
+						
+						
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
 						delay_ms(1);
 						PRB4=1;
 						delay_ms(1);
 						PRB4=0; //data P25
 						delay_ms(1);
 						PRB4=1;
-					    delay_ms(8);
-					    /******* 4**************/
-						
-						
-						
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
 						
 					}
 					else if(keyevent!=1){
 					
-						keyevent =1;
 						ref.timerTim =0;
 						
 						keyLed1=0; //shut dwon key led
-						  /******* 4**************/
-					    PRB4=0; //data P25
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+ 					    delay_ms(1);
+						PRB4=0; //data P25
 						delay_ms(1);
 						PRB4=1;
 						delay_ms(1);
 						PRB4=0; //data P25
 						delay_ms(1);
 						PRB4=1;
-					    delay_ms(8);
-					    /******* 4**************/
-					
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
+						delay_ms(1);
+						PRB4=0; //data P25
+						delay_ms(1);
+						PRB4=1;
 					}
 
 				}
 			}
 			
-		  if(KeyOldFlag & 0x04) //KEY4 POWER_KEY  capture =2
+		  if(KeyOldFlag & 0x04) //KEY4 POWER_KEY --²¶»ñ =2
 		  {
 				if(0 == (KeyREFFlag & 0x04))
 				{
-					
+					 
                     power =power ^ 0x01;
 					if(power==1&& keyevent ==0) {//motor up move
 					   ref.UpDownRunflg =1; //motor up move 
@@ -227,7 +239,6 @@ void Kscan()
 				   }
 					else if(keyevent !=1){
 					
-					    keyevent=1;
 					    ref.UpDownRunflg =0; //motor down move
 						keyLed4=0; //shut dwon led key
 						PRB4=0; //data P25
@@ -250,11 +261,10 @@ void Kscan()
 				if(0 == (KeyREFFlag & 0x08))
 				{
 					windflg =windflg ^ 0x01;
-				
-					if(windflg ==1 && keyevent ==0){
+					if(windflg ==1){
 						windflg =1;
 						ref.windMotorRunflg = 1; //turn on windows out motor 
-						keyevent =1;
+						
 						keyLed3=1;
 						
 					    PRB4=0; //data P25
@@ -271,9 +281,9 @@ void Kscan()
 						
 						
 				    }
-					else if(keyevent !=1){
+					else{
 						ref.windMotorRunflg = 0;
-						keyevent =1;
+						
 					
 						keyLed3=0;
 						
@@ -294,498 +304,7 @@ void Kscan()
 				}
 
 			}
-		  /******************* slide_touch_key  *****************************/
-		  /******************************************************************/
-		   if(KeyOldFlag & 0x10) //slide_touch_key_1 capture =5
-			{
-			
-				if(0 == (KeyREFFlag & 0x10))
-				{
-					slidekey_1 = slidekey_1 ^ 0x01;
-					if(slidekey_1==1 && keyevent ==0){
-						keyevent =1;
-						SldLed_1 =1;
-						
-						/******* 5**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(5);
-					    /******* 5**************/
-						slidekey_1 =1;
 		
-					}
-					else if(keyevent !=1){ 
-						keyevent =1;
-						SldLed_1 =0; //slide touch key 
-						sendflg =1;
-						
-						slidekey_1 =0;
-						
-						/******* 5**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(5);
-					    /******* 5**************/
-
-					}
-
-				}
-
-			}
-			
-		   if(KeyOldFlag & 0x20) //slide_touch_key_2   cpature =6
-			{
-				
-				if(0 == (KeyREFFlag & 0x20))
-				{
-					slidekey_2 = slidekey_2 ^ 0x01;
-					if(slidekey_2==1 && keyevent ==0){
-						 keyevent =1;
-					keyevent =1;
-					SldLed_2 = 1;
-					sendflg =1;
-					    
-						slidekey_2 =1;
-						  /******* 6**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(4);
-					    /******* 6**************/
-					}
-					else if(keyevent !=1){
-								keyevent =1;
-							SldLed_2 = 0;
-							sendflg =1;
-						
-						slidekey_2 =0;
-						  /******* 6**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(4);
-					    /******* 6**************/
-						
-					}
-
-				}
-
-			}
-			
-		   if(KeyOldFlag & 0x40) //slide_touch_key_3 capture =7
-			{
-				
-				if(0 == (KeyREFFlag & 0x40))
-				{
-					slidekey_3 = slidekey_3 ^ 0x01;
-					if(slidekey_3==1&& keyevent ==0){
-						keyevent =1;
-						SldLed_3 =1;
-	
-						
-						slidekey_3 =1;
-						  /******* 7**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(3);
-					    /******* 7**************/
-					
-						}
-					else if(keyevent !=1){
-							keyevent =1;
-							SldLed_3 =0;
-							sendflg =1;
-							
-							
-						slidekey_3 =0;
-						  /******* 7**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(3);
-					    /******* 7**************/
-
-					}
-
-				}
-
-			}
-			
-		   if(KeyOldFlag & 0x80) //slide_touch_key_4 capture =8
-			{
-				
-				if(0 == (KeyREFFlag & 0x80))
-				{
-					
-					slidekey_4 = slidekey_4 ^ 0x01;
-					if(slidekey_4==1&& keyevent ==0){
-					 keyevent =1;
-					   SldLed_4 =1;
-						sendflg =1;
-					
-						slidekey_4 =1;
-						  /******* 8**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						  PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						
-					    delay_ms(2);
-					    /******* 8**************/
-					
-						}
-					else if(keyevent !=1){
-
-					keyevent =1;
-						SldLed_4 =0;
-						sendflg =1;
-						
-						
-						slidekey_4 =0;
-						  /******* 8**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						  PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						
-					    delay_ms(2);
-					    /******* 8**************/
-					}
-				}
-
-			}
-		
-		   if(KeyOldFlag & 0x100) ////slide_touch_key_5  capture =9 wind_middle
-			{
-				
-				if(0 == (KeyREFFlag & 0x100))
-				{
-					slidekey_5 = slidekey_5 ^ 0x01;
-					if(slidekey_5==1&& keyevent ==0){
-							SldLed_5 =1;
-							sendflg =1;
-						
-							keyevent =1;
-							slidekey_5 =1;
-                      /******* 9**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						  PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(1);
-					    /******* 9**************/
-						
-
-					
-						
-						}
-						else if(keyevent !=1){
-						keyevent =1;	
-						SldLed_5 =0;
-						sendflg =1;
-					    slidekey_5 =0;
-					    /******* 9**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						  PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(1);
-					    /******* 9**************/
-				}
-					
-				}
-
-			}
-			if(KeyOldFlag & 0x200) //slide_touch_key_6 cpture =10 wind_high level
-			{
-				
-				if(0 == (KeyREFFlag & 0x200))
-				{
-					slidekey_6 = slidekey_6 ^ 0x01;
-					if(slidekey_6==1&& keyevent ==0){
-					 keyevent =1;
-							SldLed_6 =1;
-							sendflg =1;
-							
-							slidekey_6 =1;
-						
- 							  /******* 10**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						  PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						PRB4=0; //data P25
-					
-						PRB4=1;
-						
-					    delay_ms(1);
-					    /******* 10**************/
-					
-						
-					}
-					else if(keyevent !=1){
-						keyevent =1;
-						SldLed_6 =0;
-						sendflg =1;
-						slidekey_6 =0;
-						
-						  /******* 10**************/
-					    PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(1);
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						  PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						PRB4=0; //data P25
-					
-						PRB4=1;
-						
-					    delay_ms(1);
-					    /******* 10**************/
-						
-						}
-				  }
-			}
-		
-		   if(KeyOldFlag & 0x400) //slide_touch_key_7  capture =  16
-			{
-			
-				if(0 == (KeyREFFlag & 0x400)) //cpture =16
-				{
-					slidekey_7 = slidekey_7 ^ 0x01;
-					if(slidekey_7==1&& keyevent ==0){
-						 keyevent =1;
-						SldLed_7 =1;
-						sendflg =1;
-						 
-						slidekey_7 =1;
-
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(7);
-					
-						}
-					else if(keyevent !=1){
-						keyevent =1;
-						SldLed_7 =0;
-						sendflg =1;
-						slidekey_7 =0;
-
-						 PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(7);
-						
-						
-
-					}
-
-				}
-
-			}
-	
-			if(KeyOldFlag & 0x800) //slide_touch_key_8 capture =18
-			{
-				
-				if(0 == (KeyREFFlag & 0x800))
-				{
-					slidekey_8 = slidekey_8 ^ 0x01;
-					if(slidekey_8==1&& keyevent ==0){
-				       keyevent =1;
-						SldLed_8 =1;
-						sendflg =1;
-						slidekey_8 =1;
-
-					
-						
-					
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-					    delay_ms(5);
-
-
-						}
-					else if(keyevent !=1){
-						keyevent =1;
-						SldLed_8 =0;
-						sendflg =1;
-						slidekey_8 =0;
-
-						PRB4=0; //data P25
-						delay_ms(1);
-						PRB4=1;
-						delay_ms(5);
-						
-					}
-     
-				}
-
-			}
 
 		}
 	
@@ -794,31 +313,6 @@ void Kscan()
 		KeyOldFlag = 0;
 		KeyREFFlag = 0;
 	}
-
-	if(slidekey_1 ==1)SldLed_1 =1;
-	else SldLed_1 =0;
-
-	if(slidekey_2 ==1)SldLed_2 =1;
-	else SldLed_2 =0;
-
-	if(slidekey_3 ==1)SldLed_3 =1;
-	else SldLed_3 =0;
-
-	if(slidekey_4 ==1)SldLed_4 =1;
-	else SldLed_4 =0;
-
-	if(slidekey_5 ==1)SldLed_5 =1;
-	else SldLed_5 =0;
-
-	if(slidekey_6 ==1)SldLed_6 =1;
-	else SldLed_6 =0;
-
-	if(slidekey_7 ==1)SldLed_7 =1;
-	else SldLed_7 =0;
-
-	if(slidekey_8 ==1)SldLed_8 =1;
-	else SldLed_8 =0;
-
 	
 }
 }
@@ -844,7 +338,6 @@ void interrupt time0(void)
 	{
 		PIR1 = 0;
 		PIR2 = 0;
-		
 	}
 }
 
@@ -868,10 +361,10 @@ void main(void)
 		OSCCON = 0x71;
 	
 	   PRB4=1;
-	 
+	   PRB3=1;
+
 		if(tcount >= 32)
 		{
-			
 			tcount = 0;												//?????????4ms
 			Sys_set();
 			//Display();
